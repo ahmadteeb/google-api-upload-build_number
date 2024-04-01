@@ -1,0 +1,57 @@
+name: 'Upload android app to google play & get last build number'
+description: 'Upload android app to google play & get last build number'
+inputs:
+  package_name:
+    description: 'Enter a package name'
+    required: true
+
+  api_key_json:
+    description: 'Enter your json api key'
+    required: true
+
+  data_reqested:
+    description: 'Enter upload for uploading package and build_number to get last build number (default)'
+    required: true
+    default: 'build_number'
+
+  appbundle_path:
+    description: 'Enter the app bundle path required if you want uplaod'
+
+  app_name:
+    description: 'Enter the app name required if you want uplaod'
+
+  status:
+    description: 'Enter the release status required if you want uplaod'
+
+  track:
+    description: 'Enter the release track required if you want uplaod'
+
+outputs:
+  build_number:
+    description: 'New app build number'
+    # need to specify the extra `value` field for `composite` actions
+    value: ${{ steps.google-api-upload-build_number.outputs.build_number }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Python
+      run: apt-get update && apt-get install -y python3 && apt-get install -y python3-pip
+      shell: bash
+
+    - name: Install Dependencies
+      run: pip3 install -r ${{ github.action_path }}/src/requirements.txt
+      shell: bash
+
+    - name: Run main.py
+      id: google-api-upload-build_number
+      env:
+        KEY_FROM_JSON: ${{ inputs.api_key_json }}
+        PACKAGE_NAME: ${{ inputs.package_name }}
+        DATA_REQUESTED: ${{ inputs.data_reqested }}
+        APP_NAME: ${{ inputs.app_name }}
+        STATUS: ${{ inputs.status }}
+        TRACK: ${{ inputs.track }}
+        APPBUNDLE_PATH: ${{ inputs.appbundle_path }}
+      run: python3 ${{ github.action_path }}/src/google-api-upload-build_number.py
+      shell: bash
