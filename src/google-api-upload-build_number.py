@@ -69,6 +69,7 @@ class GooglePlayAPI:
             editId=self.EDIT_ID,
             packageName=self.PACKAGE_NAME,
             track=track,
+            changesNotSentForReview=True,
             body={
                 'track': track, 
                 'releases': [
