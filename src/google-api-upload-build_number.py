@@ -21,7 +21,11 @@ class GooglePlayAPI:
         self.service = googleapiclient.discovery.build('androidpublisher', 'v3', credentials=credentials)
 
         # Start an edit session
-        edit_request = self.service.edits().insert(body={}, packageName=self.PACKAGE_NAME)
+        edit_request = self.service.edits().insert(
+            body={}, 
+            packageName=self.PACKAGE_NAME,
+            changesNotSentForReview=True,
+        )
         edit_response = edit_request.execute()
 
         # Extract the editId from the response
@@ -69,7 +73,6 @@ class GooglePlayAPI:
             editId=self.EDIT_ID,
             packageName=self.PACKAGE_NAME,
             track=track,
-            changesNotSentForReview=True,
             body={
                 'track': track, 
                 'releases': [
