@@ -23,8 +23,7 @@ class GooglePlayAPI:
         # Start an edit session
         edit_request = self.service.edits().insert(
             body={}, 
-            packageName=self.PACKAGE_NAME,
-            changesNotSentForReview=True,
+            packageName=self.PACKAGE_NAME
         )
         edit_response = edit_request.execute()
 
@@ -91,7 +90,8 @@ class GooglePlayAPI:
         # Commit the changes
         commit_request = self.service.edits().commit(
             packageName=self.PACKAGE_NAME,
-            editId=self.EDIT_ID
+            editId=self.EDIT_ID,
+            changesNotSentForReview=True,
         )
         commit_response = commit_request.execute()
         
