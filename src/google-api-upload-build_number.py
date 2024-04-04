@@ -73,7 +73,6 @@ class GooglePlayAPI:
             packageName=self.PACKAGE_NAME,
             track=track,
             body={
-                'changesNotSentForReview': True,
                 'track': track, 
                 'releases': [
                         {   
@@ -90,7 +89,6 @@ class GooglePlayAPI:
 
         # Commit the changes
         commit_request = self.service.edits().commit(
-            changesNotSentForReview=False,
             packageName=self.PACKAGE_NAME,
             editId=self.EDIT_ID
         )
